@@ -8,6 +8,8 @@ enum AppRoute: Hashable {
     case search
     case settings
     case editProfile
+    case notifications
+    case creation
 }
 
 typealias FeedRoute = AppRoute

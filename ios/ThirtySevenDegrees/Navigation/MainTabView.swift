@@ -6,6 +6,7 @@ struct MainTabView: View {
     @State private var chatPath = NavigationPath()
     @State private var discoverPath = NavigationPath()
     @State private var profilePath = NavigationPath()
+    @State private var showCreation = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -49,7 +50,11 @@ struct MainTabView: View {
         .onChange(of: selectedTab) { _, newTab in
             if newTab == .publish {
                 selectedTab = .feed
+                showCreation = true
             }
+        }
+        .fullScreenCover(isPresented: $showCreation) {
+            CreationView()
         }
     }
 
@@ -63,45 +68,13 @@ struct MainTabView: View {
         case .topic(let tag):
             Text("话题: \(tag)")
         case .chatConversation(let id):
-            Text("聊天: \(id)")
+            ChatDetailView(conversationId: id, username: "用户")
         case .search:
             Text("搜索")
         case .settings:
-            Text("设置")
+            NotificationsView()
         case .editProfile:
             Text("编辑资料")
         }
-    }
-}
-
-struct FeedView: View {
-    var body: some View {
-        ScrollView {
-            LazyVStack(spacing: .spaceXS) {
-                FeedSkeletonView()
-            }
-        }
-        .navigationTitle("首页")
-    }
-}
-
-struct ChatListView: View {
-    var body: some View {
-        Text("消息列表")
-            .navigationTitle("消息")
-    }
-}
-
-struct DiscoverView: View {
-    var body: some View {
-        Text("发现")
-            .navigationTitle("发现")
-    }
-}
-
-struct ProfileView: View {
-    var body: some View {
-        Text("我的")
-            .navigationTitle("我的")
     }
 }

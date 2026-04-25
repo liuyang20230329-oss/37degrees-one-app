@@ -7,5 +7,5 @@ extension CGFloat {
     static let radiusMD: CGFloat = 12
     static let radiusLG: CGFloat = 16
     static let radiusXL: CGFloat = 20
-    static let radiusFull: CGFloat = .infinity
+    static let radiusFull: CGFloat = 9999
 }

@@ -44,7 +44,9 @@ struct FeedSkeletonView: View {
 
                 VStack(alignment: .leading, spacing: .spaceXS) {
                     SkeletonView().frame(height: 14)
-                    SkeletonView().frame(height: 14).frame(maxWidth: .infinity * 0.7)
+                    GeometryReader { geo in
+                        SkeletonView().frame(height: 14).frame(maxWidth: geo.size.width * 0.7)
+                    }.frame(height: 14)
                 }
                 .padding(.horizontal, .spaceLG)
                 .padding(.bottom, .spaceSM)

@@ -12,11 +12,13 @@ struct StoryItem: View {
             VStack(spacing: .spaceXS) {
                 ZStack(alignment: .topLeading) {
                     Circle()
-                        .stroke(
-                            isViewed ? Color.dividerColor : LinearGradient(
-                                colors: [.brandPrimary, .brandSecondary],
-                                startPoint: .top,
-                                endPoint: .bottom
+                        .strokeBorder(
+                            isViewed ? AnyShapeStyle(Color.dividerColor) : AnyShapeStyle(
+                                LinearGradient(
+                                    colors: [.brandPrimary, .brandSecondary],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
                             ),
                             lineWidth: 2.5
                         )
@@ -40,23 +42,5 @@ struct StoryItem: View {
             }
             .frame(width: 76)
         }
-    }
-}
-
-extension ShapeStyle where Self == LinearGradient {
-    static var storyGradient: LinearGradient {
-        LinearGradient(
-            colors: [Color.brandPrimary, Color.brandSecondary],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-    }
-}
-
-extension Shape {
-    func stroke(_ gradient: LinearGradient, lineWidth: CGFloat) -> some View {
-        self.overlay(
-            self.stroke(gradient, lineWidth: lineWidth)
-        )
     }
 }

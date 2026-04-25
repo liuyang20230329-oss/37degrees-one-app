@@ -17,16 +17,25 @@ extension View {
     func appShadow(_ shadow: AppShadow) -> some View {
         self.shadow(color: shadow.color, radius: shadow.radius, x: shadow.x, y: shadow.y)
     }
+}
 
-    @ViewBuilder
-    func cardShadow() -> some View {
-        if EnvironmentValues().colorScheme == .dark {
-            self.overlay(
+struct CardShadowModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+
+    func body(content: Content) -> some View {
+        if colorScheme == .dark {
+            content.overlay(
                 RoundedRectangle(cornerRadius: .radiusMD)
                     .stroke(Color.borderColor, lineWidth: 0.5)
             )
         } else {
-            self.appShadow(.sm)
+            content.appShadow(.sm)
         }
+    }
+}
+
+extension View {
+    func cardShadow() -> some View {
+        modifier(CardShadowModifier())
     }
 }
