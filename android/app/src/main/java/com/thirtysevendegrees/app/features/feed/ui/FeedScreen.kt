@@ -43,7 +43,7 @@ fun FeedScreen(
                 id = "$i",
                 username = "用户$i",
                 avatarUrl = null,
-                content = "这是第$i条动态内容，分享生活中的美好瞬间",
+                content = "这是第${i}条动态内容，分享生活中的美好瞬间",
                 tags = listOf("日常", "分享"),
                 imageUrls = emptyList(),
                 likeCount = i * 12,

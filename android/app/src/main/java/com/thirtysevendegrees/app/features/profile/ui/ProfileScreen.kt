@@ -113,7 +113,7 @@ fun ProfileScreen(
                 Box(
                     modifier = Modifier
                         .aspectRatio(1f)
-                        .clip(RoundedCornerShape(CornerRadius.XS))
+                        .clip(CornerRadius.XS)
                         .background(AppColors.bgTertiaryLight)
                 )
             }

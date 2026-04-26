@@ -38,7 +38,7 @@ fun CreationScreen(
                 .fillMaxWidth()
                 .heightIn(min = 150.dp)
                 .padding(horizontal = Spacing.LG),
-            shape = RoundedCornerShape(CornerRadius.SM),
+            shape = CornerRadius.SM,
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = AppColors.bgPrimaryLight,
                 focusedContainerColor = AppColors.bgPrimaryLight,

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.*
@@ -97,7 +98,7 @@ fun ChatDetailScreen(
                 onValueChange = { inputText = it },
                 placeholder = { Text("输入消息...") },
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(CornerRadius.SM),
+                shape = CornerRadius.SM,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedContainerColor = AppColors.bgTertiaryLight,
                     focusedContainerColor = AppColors.bgTertiaryLight
@@ -123,7 +124,7 @@ fun ChatDetailScreen(
                 }
             } else {
                 Icon(
-                    imageVector = Icons.Default.AddCircle,
+                    imageVector = Icons.Default.Add,
                     contentDescription = null,
                     tint = AppColors.textTertiaryLight,
                     modifier = Modifier.size(28.dp)

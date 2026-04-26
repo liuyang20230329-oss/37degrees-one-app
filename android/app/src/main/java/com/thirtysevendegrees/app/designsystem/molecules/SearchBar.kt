@@ -26,7 +26,7 @@ fun SearchBar(
         modifier = modifier
             .fillMaxWidth()
             .height(40.dp)
-            .clip(RoundedCornerShape(CornerRadius.MD))
+            .clip(CornerRadius.MD)
             .background(AppColors.bgTertiaryLight)
             .clickable(onClick = onTap)
             .padding(horizontal = Spacing.MD),

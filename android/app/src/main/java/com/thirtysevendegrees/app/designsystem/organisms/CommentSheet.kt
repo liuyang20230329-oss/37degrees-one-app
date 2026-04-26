@@ -38,7 +38,7 @@ fun CommentSheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(topStart = CornerRadius.XL, topEnd = CornerRadius.XL))
+            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
             .background(AppColors.bgPrimaryLight)
     ) {
         Box(
@@ -90,7 +90,7 @@ fun CommentSheet(
                 onValueChange = { commentText = it },
                 placeholder = { Text("说点什么...") },
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(CornerRadius.MD),
+                shape = CornerRadius.MD,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedContainerColor = AppColors.bgTertiaryLight,
                     focusedContainerColor = AppColors.bgTertiaryLight

@@ -104,7 +104,7 @@ private fun DiscoveryCard(title: String, content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(CornerRadius.MD))
+            .clip(CornerRadius.MD)
             .background(AppColors.bgSecondaryLight)
             .padding(Spacing.MD)
     ) {

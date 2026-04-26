@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -167,7 +168,7 @@ fun MediaGrid(imageUrls: List<String>, modifier: Modifier = Modifier) {
                 contentDescription = null,
                 modifier = Modifier
                     .aspectRatio(1f)
-                    .clip(RoundedCornerShape(CornerRadius.MD)),
+                    .clip(CornerRadius.MD),
                 contentScale = ContentScale.Crop
             )
         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -64,8 +65,8 @@ fun FeedSkeletonView(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.width(Spacing.SM))
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.XS)) {
-                    SkeletonBox(modifier = Modifier.height(14.dp).width(120.dp).clip(RoundedCornerShape(CornerRadius.XS)))
-                    SkeletonBox(modifier = Modifier.height(10.dp).width(80.dp).clip(RoundedCornerShape(CornerRadius.XS)))
+                    SkeletonBox(modifier = Modifier.height(14.dp).width(120.dp).clip(CornerRadius.XS))
+                    SkeletonBox(modifier = Modifier.height(10.dp).width(80.dp).clip(CornerRadius.XS))
                 }
             }
             Column(
@@ -73,16 +74,16 @@ fun FeedSkeletonView(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(horizontal = Spacing.LG, vertical = Spacing.XS)
             ) {
-                SkeletonBox(modifier = Modifier.height(14.dp).fillMaxWidth().clip(RoundedCornerShape(CornerRadius.XS)))
+                SkeletonBox(modifier = Modifier.height(14.dp).fillMaxWidth().clip(CornerRadius.XS))
                 Spacer(modifier = Modifier.height(Spacing.XS))
-                SkeletonBox(modifier = Modifier.height(14.dp).fillMaxWidth(0.7f).clip(RoundedCornerShape(CornerRadius.XS)))
+                SkeletonBox(modifier = Modifier.height(14.dp).fillMaxWidth(0.7f).clip(CornerRadius.XS))
             }
             SkeletonBox(
                 modifier = Modifier
                     .height(200.dp)
                     .fillMaxWidth()
                     .padding(horizontal = Spacing.LG, vertical = Spacing.SM)
-                    .clip(RoundedCornerShape(CornerRadius.MD))
+                    .clip(CornerRadius.MD)
             )
         }
     }
