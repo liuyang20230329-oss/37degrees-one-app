@@ -2,14 +2,14 @@ import SwiftUI
 
 @main
 struct ThirtySevenDegreesApp: App {
-    @State private var isLoggedIn = false
+    @State private var authService = AuthService.shared
 
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
+            if authService.isAuthenticated {
                 MainTabView()
             } else {
-                AuthView(onLoginSuccess: { isLoggedIn = true })
+                AuthView(onLoginSuccess: { authService.isAuthenticated = true })
             }
         }
     }

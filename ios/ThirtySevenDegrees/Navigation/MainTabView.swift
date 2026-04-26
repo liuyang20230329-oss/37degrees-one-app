@@ -72,9 +72,11 @@ struct MainTabView: View {
         case .search:
             Text("搜索")
         case .settings:
-            NotificationsView()
+            SettingsView()
         case .editProfile:
-            Text("编辑资料")
+            EditProfileView()
+        case .notifications:
+            NotificationsView()
         }
     }
 }
