@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.thirtysevendegrees.app.designsystem.organisms.AppTab
 import com.thirtysevendegrees.app.features.feed.ui.FeedScreen
 import com.thirtysevendegrees.app.features.chat.ui.ChatListScreen
 import com.thirtysevendegrees.app.features.discover.ui.DiscoverScreen
@@ -17,7 +16,6 @@ import com.thirtysevendegrees.app.features.profile.ui.ProfileScreen
 @Composable
 fun MainNavHost(
     navController: NavHostController,
-    selectedTab: AppTab,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -73,6 +71,10 @@ fun MainNavHost(
             )
         }
 
+        composable(Screen.Search.route) {
+            SearchPlaceholder()
+        }
+
         composable(Screen.Profile.route) {
             ProfileScreen(
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
@@ -113,4 +115,9 @@ private fun SettingsPlaceholder() {
 @Composable
 private fun EditProfilePlaceholder() {
     androidx.compose.material3.Text("编辑资料")
+}
+
+@Composable
+private fun SearchPlaceholder() {
+    androidx.compose.material3.Text("搜索")
 }
