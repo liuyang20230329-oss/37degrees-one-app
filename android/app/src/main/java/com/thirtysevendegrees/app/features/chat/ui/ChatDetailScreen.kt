@@ -1,5 +1,6 @@
 package com.thirtysevendegrees.app.features.chat.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.thirtysevendegrees.app.designsystem.atoms.AppIconButton
 import com.thirtysevendegrees.app.designsystem.molecules.ChatBubble
+import com.thirtysevendegrees.app.designsystem.organisms.AppNavigationBar
 import com.thirtysevendegrees.app.designsystem.tokens.*
 
 data class ChatMessage(

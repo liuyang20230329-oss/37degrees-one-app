@@ -1,6 +1,7 @@
 package com.thirtysevendegrees.app.designsystem.tokens
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 
 object CornerRadius {
     val None = RoundedCornerShape(0.dp)

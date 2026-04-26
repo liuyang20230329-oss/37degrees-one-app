@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">37度</string>
-    <color name="brand_primary">#FF4757</color>
-    <color name="brand_primary_light">#FFF0F1</color>
-    <color name="brand_secondary">#5352ED</color>
 </resources>

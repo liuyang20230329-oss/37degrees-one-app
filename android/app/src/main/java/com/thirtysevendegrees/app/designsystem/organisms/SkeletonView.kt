@@ -12,6 +12,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.thirtysevendegrees.app.designsystem.tokens.*
 
@@ -27,17 +29,21 @@ fun SkeletonBox(
             animation = tween(durationMillis = 1500, easing = LinearEasing)
         )
     )
+    var size by remember { mutableStateOf(IntSize.Zero) }
 
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .onSizeChanged { size = it }
     ) {
-        val brush = Brush.linearGradient(
-            colors = listOf(Color.Transparent, Color.White.copy(alpha = 0.2f), Color.Transparent),
-            start = Offset(size.width * shimmerOffset, 0f),
-            end = Offset(size.width * shimmerOffset + size.width, size.height)
-        )
-        Box(modifier = Modifier.matchParentSize().background(brush))
+        if (size != IntSize.Zero) {
+            val brush = Brush.linearGradient(
+                colors = listOf(Color.Transparent, Color.White.copy(alpha = 0.2f), Color.Transparent),
+                start = Offset(size.width * shimmerOffset, 0f),
+                end = Offset(size.width * shimmerOffset + size.width, size.height.toFloat())
+            )
+            Box(modifier = Modifier.matchParentSize().background(brush))
+        }
     }
 }
 
