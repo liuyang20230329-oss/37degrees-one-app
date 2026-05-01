@@ -1,0 +1,359 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  name              String    @default("")
+  email             String    @unique @default("")
+  phoneNumber       String?   @unique
+  maskedPhoneNumber String?
+  passwordHash      String    @default("")
+  avatarKey         String    @default("aurora")
+  gender            String    @default("undisclosed")
+  birthYear         Int?
+  birthMonth        Int?
+  city              String    @default("")
+  signature         String    @default("这个人很酷，还没有留下签名。")
+  introVideoTitle   String    @default("还没有上传视频介绍")
+  introVideoSummary String    @default("后续可以用一段视频介绍自己，让更多人更快认识你。")
+  phoneStatus       String    @default("none")
+  identityStatus    String    @default("none")
+  faceStatus        String    @default("none")
+  legalName         String?
+  idNumber          String?
+  maskedIdNumber    String?
+  faceMatchScore    Float?
+  membershipLevel   String    @default("standard")
+  isOnline          Boolean   @default(false)
+  activityScore     Int       @default(0)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  socialAccounts      UserSocialAccount[]
+  deviceSessions      UserDeviceSession[]
+  identityVerifications IdentityVerificationRequest[]
+  faceVerifications   FaceVerificationRequest[]
+  works               UserWork[]
+  chatPrivacySetting  ChatUserPrivacySetting?
+  sentMessages        ChatMessage[]           @relation("SentMessages")
+  conversationMembers ChatConversationMember[]
+  blacklistEntries    ChatBlacklistEntry[]    @relation("BlacklistOwner")
+  blockedByEntries    ChatBlacklistEntry[]    @relation("BlacklistTarget")
+  circlePosts         CirclePost[]
+  circleComments      CircleComment[]
+  circleReports       CircleReport[]
+  userNotifications   UserNotification[]
+  savedSquareFilters  SavedSquareFilter[]
+  adminAuditLogs      AdminAuditLog[]         @relation("AdminUser")
+  auditTargetLogs     AdminAuditLog[]         @relation("AuditTarget")
+
+  @@map("users")
+}
+
+model SmsCode {
+  id          String   @id @default(uuid())
+  phoneNumber String
+  code        String
+  purpose     String
+  sessionId   String   @default(uuid())
+  verified    Boolean  @default(false)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@map("sms_codes")
+}
+
+model UserSocialAccount {
+  id          String   @id @default(uuid())
+  userId      String
+  provider    String
+  providerUid String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUid])
+  @@map("user_social_accounts")
+}
+
+model UserDeviceSession {
+  id          String    @id @default(uuid())
+  userId      String
+  platform    String    @default("unknown")
+  deviceModel String?
+  pushToken   String?
+  ipAddress   String?
+  lastActiveAt DateTime @default(now())
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_device_sessions")
+}
+
+model IdentityVerificationRequest {
+  id         String   @id @default(uuid())
+  userId     String
+  legalName  String
+  idNumber   String
+  status     String   @default("approved")
+  reviewedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("identity_verification_requests")
+}
+
+model FaceVerificationRequest {
+  id            String   @id @default(uuid())
+  userId        String
+  matchScore    Float    @default(0.99)
+  status        String   @default("approved")
+  reviewedAt    DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("face_verification_requests")
+}
+
+model UserWork {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  title     String
+  summary   String   @default("")
+  mediaUrl  String?
+  duration  Int?
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_works")
+}
+
+model ChatConversation {
+  id                String   @id @default(uuid())
+  title             String
+  subtitle          String   @default("")
+  categoryLabel     String   @default("")
+  segment           String   @default("private")
+  lastMessagePreview String?
+  lastMessageAt     DateTime @default(now())
+  isPinned          Boolean  @default(false)
+  createdBy         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  members  ChatConversationMember[]
+  messages ChatMessage[]
+
+  @@map("chat_conversations")
+}
+
+model ChatConversationMember {
+  id             String   @id @default(uuid())
+  conversationId String
+  userId         String
+  unreadCount    Int      @default(0)
+  lastReadAt     DateTime?
+  joinedAt       DateTime @default(now())
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@map("chat_conversation_members")
+}
+
+model ChatMessage {
+  id             String   @id @default(uuid())
+  conversationId String
+  senderId       String
+  senderName     String   @default("")
+  text           String?
+  type           String   @default("text")
+  deliveryStatus String   @default("Sent")
+  mediaUrl       String?
+  metadataLabel  String?
+  isRecalled     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User             @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model ChatUserPrivacySetting {
+  id                  String  @id @default(uuid())
+  userId              String  @unique
+  friendsOnly         Boolean @default(false)
+  allowSquareExposure Boolean @default(true)
+  preferVerifiedUsers Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chat_user_privacy_settings")
+}
+
+model ChatBlacklistEntry {
+  id           String   @id @default(uuid())
+  userId       String
+  targetUserId String
+  createdAt    DateTime @default(now())
+
+  owner  User @relation("BlacklistOwner", fields: [userId], references: [id], onDelete: Cascade)
+  target User @relation("BlacklistTarget", fields: [targetUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetUserId])
+  @@map("chat_blacklist_entries")
+}
+
+model CirclePost {
+  id               String   @id @default(uuid())
+  authorId         String
+  authorName       String   @default("")
+  location         String?
+  content          String
+  visibility       String   @default("public")
+  verificationLabel String?
+  likesCount       Int      @default(0)
+  commentsCount    Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  author   User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  media    CirclePostMedia[]
+  comments CircleComment[]
+  reports  CircleReport[]
+
+  @@map("circle_posts")
+}
+
+model CirclePostMedia {
+  id        String   @id @default(uuid())
+  postId    String
+  mediaType String
+  url       String
+  label     String?
+
+  post CirclePost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("circle_post_media")
+}
+
+model CircleComment {
+  id              String   @id @default(uuid())
+  postId          String
+  authorId        String
+  authorName      String   @default("")
+  content         String
+  parentCommentId String?
+  createdAt       DateTime @default(now())
+
+  post          CirclePost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author        User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment CircleComment? @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies       CircleComment[] @relation("CommentReplies")
+
+  @@map("circle_comments")
+}
+
+model CircleReport {
+  id        String   @id @default(uuid())
+  postId    String
+  reporterId String
+  reason    String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  post     CirclePost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporter User       @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@map("circle_reports")
+}
+
+model SystemNotification {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  type      String   @default("info")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  userNotifications UserNotification[]
+
+  @@map("system_notifications")
+}
+
+model UserNotification {
+  id                 String   @id @default(uuid())
+  userId             String
+  systemNotificationId String?
+  title              String?
+  content            String?
+  type               String   @default("system")
+  isRead             Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  systemNotification SystemNotification? @relation(fields: [systemNotificationId], references: [id], onDelete: SetNull)
+
+  @@map("user_notifications")
+}
+
+model SquareBannerItem {
+  id        String   @id @default(uuid())
+  title     String
+  imageUrl  String?
+  linkUrl   String?
+  sort      Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("square_banner_items")
+}
+
+model SavedSquareFilter {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  region    String?
+  gender    String?
+  ageMin    Int?
+  ageMax    Int?
+  membershipLevel String?
+  verifiedOnly    Boolean @default(false)
+  onlineOnly      Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("saved_square_filters")
+}
+
+model AdminAuditLog {
+  id         String   @id @default(uuid())
+  adminUserId String
+  action     String
+  targetType String?
+  targetId   String?
+  detail     String?
+  createdAt  DateTime @default(now())
+
+  adminUser   User  @relation("AdminUser", fields: [adminUserId], references: [id])
+  auditTarget User? @relation("AuditTarget", fields: [targetId], references: [id])
+
+  @@map("admin_audit_logs")
+}
